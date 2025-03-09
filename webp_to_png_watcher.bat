@@ -1,3 +1,3 @@
 @echo off
-python "C:\Pessoal\DigitalDimension\webpToPng\webpToPng.py"
+python "The Script"
 exit
