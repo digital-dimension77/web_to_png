@@ -5,14 +5,12 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from PIL import Image
 
-# Configure logging to write to a file
-LOG_FILE = r"C:\Pessoal\DigitalDimension\webpToPng\script_log.txt"
+LOG_FILE = r"The_log_file"
 logging.basicConfig(filename=LOG_FILE, level=logging.DEBUG,
                     format="%(asctime)s - %(message)s")
 
-WATCH_FOLDER = r"C:\Pessoal\DigitalDimension"
+WATCH_FOLDER = r"The folder to be watched"
 
-# Suppress excessive logs from PIL and watchdog
 logging.getLogger("PIL").setLevel(logging.ERROR)
 logging.getLogger("watchdog").setLevel(logging.WARNING)
 
@@ -29,14 +27,13 @@ class WebpToPngConverter(FileSystemEventHandler):
             self.retry_convert(filepath)
 
     def retry_convert(self, webp_path, retries=5, delay=2):
-        """Retry conversion if the file is locked (still being written)."""
         for attempt in range(retries):
             try:
                 png_path = os.path.splitext(webp_path)[0] + ".png"
                 with Image.open(webp_path) as img:
                     img.save(png_path, "PNG")
 
-                os.remove(webp_path)  # Delete the .webp file
+                os.remove(webp_path)
                 logging.info(
                     f"Converted and deleted: {webp_path} -> {png_path}")
                 return
